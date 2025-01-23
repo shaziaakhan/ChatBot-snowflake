@@ -30,6 +30,8 @@ with st.sidebar:
         [
             'llama3.2-3b',
             'llama3.1-8b',
+            'jamba-instruct',
+            'jamba-1.5-mini',
             'mixtral-8x7b',
             'snowflake-arctic',
             'mistral-large',
