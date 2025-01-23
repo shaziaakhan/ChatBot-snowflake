@@ -28,6 +28,7 @@ with st.sidebar:
     st.session_state.selected_llm = st.selectbox(
         "Select the LLM you want to use:",
         [
+            'llama3.2-3b',
             'mixtral-8x7b',
             'snowflake-arctic',
             'mistral-large',
