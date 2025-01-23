@@ -29,6 +29,7 @@ with st.sidebar:
         "Select the LLM you want to use:",
         [
             'llama3.2-3b',
+            'llama3.1-8b',
             'mixtral-8x7b',
             'snowflake-arctic',
             'mistral-large',
