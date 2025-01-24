@@ -43,7 +43,7 @@ with st.sidebar:
             'gemma-7b'
         ]
     )
-    st.slider("Number of rows to fetch", min_value=1, max_value=51000, key="num_rows")
+    st.slider("Number of rows to fetch", min_value=1, max_value=1024, key="num_rows")
     st.slider("Number of messages to remember while answering question", 0, 10, key="slide_window")
 # Function to process questions and return answers from the dataset
 def ask_question():
