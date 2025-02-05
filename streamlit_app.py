@@ -29,9 +29,6 @@ from snowflake.snowpark.context import get_active_session
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
  
-st.set_page_config(layout="wide", initial_sidebar_state="expanded")
-
-session = get_active_session()
  
  
 def process_text_chunks(text):
