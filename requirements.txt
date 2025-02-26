@@ -1,9 +1,10 @@
 snowflake-connector-python
-snowflake-snowpark-python
+snowflake-snowpark-python[pandas]
+protobuf==3.20.*
+pyarrow
 streamlit
 pandas
 langchain
 plotly
-protobuf==3.20.*
-pyarrow
+
 
