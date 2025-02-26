@@ -2,11 +2,24 @@
 import streamlit as st
 import plotly.express as px
 from snowflake.snowpark.context import get_active_session
+from snowflake.snowpark import Session
 
+# Snowflake credentials (from secrets.toml or environment variables)
+sf_options = {
+    "account": st.secrets["snowflake"]["account"],
+    "user": st.secrets["snowflake"]["user"],
+    "password": st.secrets["snowflake"]["password"],
+    "warehouse": st.secrets["snowflake"]["warehouse"],
+    "database": st.secrets["snowflake"]["database"],
+    "schema": st.secrets["snowflake"]["schema"],
+}
+
+# Initialize the Snowflake session
+session = Session.builder.configs(sf_options).create()
 
 
 # Get the current credentials
-session = get_active_session()
+# session = get_active_session()
 
 """
 Cortex Analyst App
