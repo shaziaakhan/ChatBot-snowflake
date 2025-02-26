@@ -1,11 +1,4 @@
 # Import python packages
-import subprocess
-
-try:
-    import _snowflake
-except ImportError:
-    subprocess.run(["pip", "install", "--no-cache-dir", "snowflake-connector-python"])
-    import _snowflake
 
 import streamlit as st
 import plotly.express as px
