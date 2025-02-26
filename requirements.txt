@@ -4,3 +4,4 @@ pandas
 langchain
 snowflake-connector-python
 plotly
+_snowflake
