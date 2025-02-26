@@ -2,3 +2,5 @@ snowflake-snowpark-python
 streamlit
 pandas
 langchain
+snowflake-connector-python
+plotly
