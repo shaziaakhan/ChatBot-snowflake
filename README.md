@@ -14,7 +14,7 @@ The system comprises two Streamlit applications:
 - **Snowflake Snowpark Integration** – Retrieves and preprocesses large datasets with high efficiency.
 - **LangChain-Powered Processing** – Uses `RecursiveCharacterTextSplitter` for structured data handling.
 - **AI-Driven Response Generation** – Utilizes Snowflake Cortex LLMs for intelligent data-driven responses.
-- **Multi-Model AI Support** – Allows switching between advanced models such as `claude-3-5-sonnet`, `mixtral-8x7b`, and `snowflake-arctic`.
+- **Multi-Model AI Support** – Allows switching between advanced models such as `llama3.2-3b`, `claude-3-5-sonnet`, `mixtral-8x7b`, and `snowflake-arctic`.
 
 ### Application 2: Cortex Analyst for Data Visualization
 - **Dynamic Data Retrieval** – Connects to Snowflake databases to fetch and analyze structured data.
