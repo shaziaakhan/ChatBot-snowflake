@@ -1,0 +1,417 @@
+name: global_sales
+tables:
+  - name: GLOBAL_SALES
+    base_table:
+      database: TEST_DB
+      schema: PUBLIC
+      table: GLOBAL_SALES
+    dimensions:
+      - name: ORDER_ID
+        expr: ORDER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - CA-2014-AB10015140-41954
+          - IN-2014-JR162107-41675
+          - IN-2014-CR127307-41929
+        description: Unique identifier for each order, in the format "Country-YYYY-RegionCode-OrderNumber-SequenceNumber".
+        synonyms:
+          - order_number
+          - purchase_id
+          - transaction_id
+          - sales_id
+          - invoice_number
+      - name: SHIP_MODE
+        expr: SHIP_MODE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - First Class
+          - Second Class
+          - Same Day
+        description: The shipping method used to deliver the product to the customer.
+        synonyms:
+          - shipping_method
+          - delivery_mode
+          - transportation_mode
+          - freight_mode
+          - logistics_mode
+          - shipping_type
+      - name: CUSTOMER_ID
+        expr: CUSTOMER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - AB-100151402
+          - JR-162107
+          - CR-127307
+        description: Unique identifier for the customer who made the purchase.
+        synonyms:
+          - client_id
+          - customer_number
+          - account_id
+          - client_number
+          - account_holder_id
+          - customer_account_id
+          - user_id
+      - name: CUSTOMER_NAME
+        expr: CUSTOMER_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Aaron Bergman
+          - Craig Reiter
+          - Magdelene Morse
+        description: The name of the customer who made a purchase.
+        synonyms:
+          - client_name
+          - customer_title
+          - account_holder
+          - account_name
+          - client_title
+          - buyer_name
+          - account_owner
+          - customer_title_name
+      - name: SEGMENT
+        expr: SEGMENT
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Consumer
+          - Corporate
+          - Home Office
+        description: The type of customer or market segment that made the purchase, such as individual consumers, corporate entities, or home office users.
+        synonyms:
+          - market_segment
+          - customer_segment
+          - demographic_segment
+          - target_segment
+          - audience_segment
+          - client_segment
+      - name: CITY
+        expr: CITY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Oklahoma City
+          - Wollongong
+          - Brisbane
+        description: The city where the sale was made.
+        synonyms:
+          - town
+          - municipality
+          - metropolis
+          - urban_area
+          - locality
+          - settlement
+          - urban_center
+          - metropolitan_area
+      - name: STATE
+        expr: STATE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Oklahoma
+          - New South Wales
+          - Queensland
+        description: The geographic region or state where the sale was made.
+        synonyms:
+          - province
+          - territory
+          - region
+          - area
+          - location
+          - jurisdiction
+          - county
+          - parish
+          - prefecture
+          - district
+      - name: COUNTRY
+        expr: COUNTRY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - United States
+          - Australia
+          - Germany
+        description: The country where the game was sold.
+        synonyms:
+          - nation
+          - land
+          - territory
+          - state
+          - republic
+          - commonwealth
+          - homeland
+          - nationality
+      - name: REGION
+        expr: REGION
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Central US
+          - Oceania
+          - Western Europe
+        description: Geographic region where the game was sold.
+        synonyms:
+          - area
+          - territory
+          - zone
+          - district
+          - province
+          - geographic_area
+          - location
+          - sector
+      - name: MARKET
+        expr: MARKET
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - USCA
+          - Asia Pacific
+          - Europe
+        description: The geographic region where the product was sold.
+        synonyms:
+          - target_audience
+          - geographic_area
+          - sales_territory
+          - customer_base
+          - trade_area
+          - sales_region
+          - demographic_area
+      - name: PRODUCT_ID
+        expr: PRODUCT_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - TEC-PH-5816
+          - FUR-CH-5379
+          - TEC-PH-5356
+        description: Unique identifier for a product in the global sales dataset.
+        synonyms:
+          - product_code
+          - item_id
+          - product_number
+          - item_code
+          - sku
+          - product_key
+      - name: CATEGORY
+        expr: CATEGORY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Technology
+          - Furniture
+          - Office Supplies
+        description: The category of the product being sold, such as technology items, furniture, or office supplies.
+        synonyms:
+          - product_group
+          - classification
+          - type
+          - product_type
+          - grouping
+          - class
+          - product_class
+          - kind
+          - genre
+      - name: Sub_Category
+        expr: '"Sub-Category"'
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Phones
+          - Chairs
+          - Copiers
+        description: The category of product being sold, such as office equipment or furniture, at a more specific level than the overall category.
+        synonyms:
+          - sub_category
+          - sub_class
+          - sub_group
+          - sub_type
+          - sub_classification
+          - secondary_category
+          - sub_heading
+      - name: PRODUCT_NAME
+        expr: PRODUCT_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Samsung Convoy 3
+          - Novimex Executive Leather Armchair, Black
+          - Nokia Smart Phone, with Caller ID
+        description: The name of the product being sold, including the brand, model, and any additional descriptive information.
+        synonyms:
+          - item_name
+          - product_title
+          - item_description
+          - product_label
+          - product_identifier
+          - product_code
+          - item_label
+          - product_description
+      - name: ORDER_PRIORITY
+        expr: ORDER_PRIORITY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - High
+          - Critical
+          - Medium
+        description: The level of priority assigned to an order, indicating its urgency and importance, with possible values being High, Critical, or Medium.
+        synonyms:
+          - order_importance
+          - priority_level
+          - shipping_urgency
+          - delivery_priority
+          - order_urgency
+          - priority_status
+      - name: RETURNED
+        expr: RETURNED
+        data_type: BOOLEAN
+        sample_values:
+          - 'FALSE'
+          - 'TRUE'
+        description: Indicates whether a game was returned by the customer.
+        synonyms:
+          - returned_items
+          - returned_orders
+          - order_returned
+          - is_returned
+          - return_status
+    time_dimensions:
+      - name: ORDER_DATE
+        expr: ORDER_DATE
+        data_type: DATE
+        sample_values:
+          - '2014-11-11'
+          - '2014-02-05'
+          - '2014-10-17'
+        description: The date on which the order was placed.
+        synonyms:
+          - order_timestamp
+          - purchase_date
+          - transaction_date
+          - sale_date
+          - date_ordered
+          - order_creation_date
+          - order_placement_date
+          - date_of_order
+      - name: SHIP_DATE
+        expr: SHIP_DATE
+        data_type: DATE
+        sample_values:
+          - '2014-11-13'
+          - '2014-02-07'
+          - '2014-10-18'
+        description: Date on which the product was shipped to the customer.
+        synonyms:
+          - dispatch_date
+          - delivery_date
+          - shipping_day
+          - send_date
+          - despatch_date
+          - send_out_date
+    facts:
+      - name: ROW_ID
+        expr: ROW_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '40098'
+          - '26341'
+          - '25330'
+        description: A unique identifier for each record in the global sales dataset.
+        synonyms:
+          - record_id
+          - unique_identifier
+          - row_number
+          - identifier
+          - id
+          - entry_id
+          - index_id
+          - row_key
+      - name: POSTAL_CODE
+        expr: POSTAL_CODE
+        data_type: NUMBER(38,1)
+        sample_values:
+          - '73120.0'
+          - '98103.0'
+          - '94122.0'
+        description: The postal code of the customer's billing address.
+        synonyms:
+          - zip_code
+          - postcode
+          - zip
+          - postal
+          - mailing_code
+          - geographic_code
+          - location_code
+      - name: SALES
+        expr: SALES
+        data_type: NUMBER(38,16)
+        sample_values:
+          - '221.9800000000000000'
+          - '3709.3949999999995000'
+          - '5175.1710000000010000'
+        description: The total revenue generated from sales, representing the amount of money earned from the sale of products or services.
+        synonyms:
+          - revenue
+          - turnover
+          - income
+          - earnings
+          - proceeds
+          - gross_sales
+          - total_sales
+          - sales_amount
+          - sales_figure
+          - sales_value
+      - name: QUANTITY
+        expr: QUANTITY
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '2'
+          - '9'
+          - '5'
+        description: The total number of units sold for a particular game in a specific region.
+        synonyms:
+          - amount
+          - volume
+          - count
+          - number_of_items
+          - total_items
+          - item_count
+          - quantity_ordered
+          - units_sold
+          - product_quantity
+      - name: DISCOUNT
+        expr: DISCOUNT
+        data_type: NUMBER(38,17)
+        sample_values:
+          - '0.00000000000000000'
+          - '0.10000000000000000'
+          - '0.20000000000000000'
+        description: The percentage discount applied to the sale, ranging from 0% to 20%.
+        synonyms:
+          - rebate
+          - markdown
+          - price_reduction
+          - discount_percentage
+          - price_cut
+          - concession
+          - price_discount
+      - name: PROFIT
+        expr: PROFIT
+        data_type: NUMBER(38,18)
+        sample_values:
+          - '62.154400000000010000'
+          - '-288.765000000000000000'
+          - '919.970999999999700000'
+        description: The profit earned from the sale of a product, representing the difference between the revenue generated and the total cost incurred.
+        synonyms:
+          - gain
+          - earnings
+          - net_income
+          - revenue
+          - income
+          - surplus
+          - margin
+          - financial_gain
+      - name: SHIPPING_COST
+        expr: SHIPPING_COST
+        data_type: NUMBER(38,16)
+        sample_values:
+          - '40.7700000000000000'
+          - '923.6300000000000000'
+          - '915.4900000000000000'
+        description: The total cost incurred by the company to ship products to customers.
+        synonyms:
+          - shipping_expense
+          - freight_cost
+          - delivery_fee
+          - transportation_cost
+          - logistics_expense
+          - handling_charge

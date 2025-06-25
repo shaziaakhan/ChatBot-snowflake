@@ -1,0 +1,433 @@
+name: pizza
+description: |-
+  order_id, date_time, name : accessible data 
+  sales and recommendation questions
+tables:
+  - name: PIZZA
+    base_table:
+      database: TEST_DB
+      schema: PUBLIC
+      table: PIZZA_DATA
+    dimensions:
+      - name: ORDER_ID
+        expr: ORDER_ID
+        data_type: VARCHAR(16777216)
+        description: Unique identifier for each pizza order.
+        sample_values:
+          - Ord-1
+          - Ord-2
+          - Ord-3
+        synonyms:
+          - order_number
+          - transaction_id
+          - purchase_id
+          - request_id
+          - sale_id
+      - name: STORE_ID
+        expr: STORE_ID
+        data_type: VARCHAR(16777216)
+        description: Unique identifier for each store location where pizza sales data is collected.
+        sample_values:
+          - SRT-36513
+          - SRT-3655
+          - SRT-36520
+        synonyms:
+          - store_identifier
+          - outlet_id
+          - location_id
+          - shop_id
+          - merchant_id
+          - vendor_id
+      - name: STORE_FORMAT
+        expr: STORE_FORMAT
+        data_type: VARCHAR(16777216)
+        description: This column categorizes pizza stores based on their physical location and layout, with possible formats being a traditional "Regular" store, a store located within a "Mall", or a store situated along a "Highway".
+        sample_values:
+          - Regular
+          - Mall
+          - Highway
+        synonyms:
+          - store_type
+          - outlet_format
+          - retail_layout
+          - shop_style
+          - market_structure
+          - sales_channel
+          - store_category
+          - outlet_configuration
+      - name: CITY
+        expr: CITY
+        data_type: VARCHAR(16777216)
+        description: City where the pizza outlet is located, indicating the geographical location of the store.
+        sample_values:
+          - Mumbai
+          - Shimla
+          - Bengaluru
+        synonyms:
+          - town
+          - metropolis
+          - municipality
+          - urban_area
+          - locale
+          - settlement
+          - urban_center
+          - metropolitan_area
+      - name: REGION
+        expr: REGION
+        data_type: VARCHAR(16777216)
+        description: 'Geographic region where the pizza store is located, categorized into three areas: West, North, and South.'
+        sample_values:
+          - West
+          - North
+          - South
+        synonyms:
+          - area
+          - zone
+          - district
+          - territory
+          - locale
+          - sector
+          - province
+          - division
+      - name: COUNTRY
+        expr: COUNTRY
+        data_type: VARCHAR(16777216)
+        description: The country where the pizza was sold or consumed.
+        sample_values:
+          - India
+        synonyms:
+          - nation
+          - land
+          - territory
+          - state
+          - realm
+          - dominion
+          - kingdom
+          - nationality
+          - homeland
+          - territory_name
+      - name: PIZZA_ID
+        expr: PIZZA_ID
+        data_type: VARCHAR(16777216)
+        description: Unique identifier for each pizza type, capturing variations in toppings and size.
+        sample_values:
+          - hawaiian_m
+          - classic_dlx_m
+          - five_cheese_l
+        synonyms:
+          - pizza_identifier
+          - pizza_code
+          - pizza_key
+          - product_id
+          - menu_item_id
+          - dish_id
+      - name: DATE_TIME
+        expr: DATE_TIME
+        data_type: VARCHAR(16777216)
+        description: The date and time when each pizza order was placed.
+        sample_values:
+          - 1/1/2023 11:38
+          - 1/1/2023 11:57
+          - 1/1/2023 12:12
+        synonyms:
+          - timestamp
+          - datetime
+          - date_and_time
+          - time_of_day
+          - event_time
+          - log_time
+          - record_time
+          - creation_time
+          - update_time
+      - name: MONTH
+        expr: MONTH
+        data_type: VARCHAR(16777216)
+        description: The month of the year in which the pizza data was recorded, with possible values being January, February, and March.
+        sample_values:
+          - January
+          - February
+          - March
+        synonyms:
+          - month_of_year
+          - month_value
+          - monthly_period
+          - period_of_month
+          - month_number
+      - name: QUARTER
+        expr: QUARTER
+        data_type: VARCHAR(16777216)
+        description: Represents the quarter of the year in which the pizza sales data was recorded, with possible values being Quarter1 (January to March) and Quarter2 (April to June).
+        sample_values:
+          - Quarter1
+          - Quarter2
+        synonyms:
+          - qtr
+          - quarter_of_year
+          - quarterly_period
+          - fiscal_quarter
+          - period_of_year
+      - name: DAY
+        expr: DAY
+        data_type: VARCHAR(16777216)
+        description: Day of the week when the pizza was sold or ordered.
+        sample_values:
+          - Thursday
+          - Friday
+          - Saturday
+        synonyms:
+          - daily
+          - day_of_week
+          - day_of_month
+          - daily_value
+          - daily_figure
+      - name: HOUR
+        expr: HOUR
+        data_type: VARCHAR(16777216)
+        description: Time of day when pizza order was placed, categorized into hourly ranges.
+        sample_values:
+          - 11-12 noon
+          - 12-01 pm
+          - 01-02 pm
+        synonyms:
+          - hour_of_day
+          - time_of_day
+          - clock_hour
+          - hour_value
+          - time_hour
+      - name: PIZZA_TYPE_ID
+        expr: PIZZA_TYPE_ID
+        data_type: VARCHAR(16777216)
+        description: Type of pizza, such as Hawaiian, Classic Deluxe, or Five Cheese, that is being sold.
+        sample_values:
+          - hawaiian
+          - classic_dlx
+          - five_cheese
+        synonyms:
+          - pizza_category_id
+          - pizza_style_id
+          - pizza_variation_id
+          - pizza_kind_id
+          - pizza_class_id
+      - name: SIZE
+        expr: SIZE
+        data_type: VARCHAR(16777216)
+        description: Size of the pizza, with possible values being Medium (M), Large (L), or Small (S).
+        sample_values:
+          - M
+          - L
+          - S
+        synonyms:
+          - dimension
+          - length
+          - width
+          - height
+          - measurement
+          - scale
+      - name: NAME
+        expr: NAME
+        data_type: VARCHAR(16777216)
+        description: This column captures the different types of pizzas offered by the restaurant, such as Hawaiian, Classic Deluxe, and Five Cheese, which can be used to analyze sales, customer preferences, and menu item performance.
+        sample_values:
+          - Hawaiian Pizza
+          - Classic Deluxe Pizza
+          - Five Cheese Pizza
+        synonyms:
+          - title
+          - label
+          - identifier
+          - designation
+          - moniker
+      - name: CATEGORY
+        expr: CATEGORY
+        data_type: VARCHAR(16777216)
+        description: The type of pizza category, which can be Classic, Veggie, or Supreme, indicating the general style or theme of the pizza.
+        sample_values:
+          - Classic
+          - Veggie
+          - Supreme
+        synonyms:
+          - type
+          - classification
+          - group
+          - section
+          - genre
+          - kind
+          - class
+    measures:
+      - name: QUANTITY
+        expr: QUANTITY
+        data_type: NUMBER(38,0)
+        description: The number of pizzas ordered in a single transaction.
+        sample_values:
+          - '2'
+          - '8'
+          - '4'
+        synonyms:
+          - amount
+          - count
+          - volume
+          - number
+          - units
+          - qty
+          - quantity_ordered
+          - items_purchased
+      - name: YEAR
+        expr: YEAR
+        data_type: NUMBER(38,0)
+        description: The year in which the pizza data was recorded or the pizza was sold.
+        sample_values:
+          - '2023'
+        synonyms:
+          - annual
+          - annum
+          - fiscal_year
+          - calendar_year
+          - yr
+      - name: WEEK
+        expr: WEEK
+        data_type: NUMBER(38,0)
+        description: Week of the year in which the pizza data was collected, with 1 being the first week of the year and 52 being the last week of the year.
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+        synonyms:
+          - week_number
+          - weekly_period
+          - seven_day_span
+          - cycle
+          - weekly_cycle
+      - name: UNIT_COST_PRICE
+        expr: UNIT_COST_PRICE
+        data_type: FLOAT
+        description: The cost price of a single unit of a pizza item, representing the amount paid by the company to acquire or produce one unit of the item.
+        sample_values:
+          - '9.93'
+          - '9.76'
+          - '13.87'
+        synonyms:
+          - unit_price
+          - cost_per_unit
+          - base_cost
+          - purchase_price
+          - wholesale_price
+          - supplier_cost
+          - item_cost
+          - product_cost
+          - buying_price
+      - name: UNIT_SELLING_PRICE
+        expr: UNIT_SELLING_PRICE
+        data_type: FLOAT
+        description: The price at which a single unit of a pizza is sold to customers.
+        sample_values:
+          - '13.25'
+          - '16'
+          - '18.5'
+        synonyms:
+          - list_price
+          - selling_price_per_unit
+          - unit_retail_price
+          - price_per_unit
+          - unit_sale_price
+      - name: REVENUE
+        expr: REVENUE
+        data_type: FLOAT
+        description: The total amount of money earned from pizza sales.
+        sample_values:
+          - '26.5'
+          - '32'
+          - '37'
+        synonyms:
+          - sales
+          - income
+          - turnover
+          - earnings
+          - profit_before_tax
+          - gross_income
+          - revenue_stream
+          - monetary_gain
+      - name: TOTAL_COST
+        expr: TOTAL_COST
+        data_type: FLOAT
+        description: The total cost of each pizza order, including all toppings and any additional fees.
+        sample_values:
+          - '19.86'
+          - '19.52'
+          - '27.74'
+        synonyms:
+          - total_expense
+          - total_spend
+          - total_outlay
+          - total_expenditure
+          - overall_cost
+      - name: PROFIT
+        expr: PROFIT
+        data_type: FLOAT
+        description: The profit earned from the sale of each pizza, representing the difference between the selling price and the cost of ingredients and production.
+        sample_values:
+          - '6.64'
+          - '12.48'
+          - '9.26'
+        synonyms:
+          - gain
+          - earnings
+          - net_income
+          - surplus
+          - margin
+          - return_on_investment
+      - name: EVENT
+        expr: EVENT
+        data_type: NUMBER(38,0)
+        description: Event type indicator, where 0 represents a non-event and 1 represents an event.
+        sample_values:
+          - '0'
+          - '1'
+        synonyms:
+          - happening
+          - occurrence
+          - incident
+          - experience
+          - episode
+          - affair
+          - circumstance
+      - name: STORM
+        expr: STORM
+        data_type: NUMBER(38,0)
+        description: A binary indicator of whether a pizza has a Storm topping or not, where 0 represents no Storm topping and 1 represents a Storm topping.
+        sample_values:
+          - '0'
+          - '1'
+        synonyms:
+          - cyclone
+          - hurricane
+          - tornado
+          - tempest
+          - whirlwind
+          - gale
+          - blizzard
+      - name: PROMOTION
+        expr: PROMOTION
+        data_type: NUMBER(38,0)
+        description: Indicates whether a pizza sale was made under a promotional offer (1) or not (0).
+        sample_values:
+          - '0'
+          - '1'
+        synonyms:
+          - offer
+          - discount
+          - sale
+          - promo
+          - advertisement
+          - marketing_campaign
+          - special_deal
+          - limited_time_offer
+      - name: AVERAGE_ORDER_VALUE
+        expr: AVERAGE_ORDER_VALUE
+        data_type: FLOAT
+        description: The average amount spent by customers in a single order.
+        synonyms:
+          - average_order_size
+          - average_transaction_value
+          - avg_order_value
+          - mean_order_value
+          - typical_order_cost
