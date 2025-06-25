@@ -1,32 +1,13 @@
-# Import python packages
-
+#
 import streamlit as st
 import plotly.express as px
 from snowflake.snowpark.context import get_active_session
-from snowflake.snowpark import Session
 
-# Snowflake credentials (from secrets.toml or environment variables)
-sf_options = {
-    "account": st.secrets["snowflake"]["account"],
-    "user": st.secrets["snowflake"]["user"],
-    "password": st.secrets["snowflake"]["password"],
-    "warehouse": st.secrets["snowflake"]["warehouse"],
-    "database": st.secrets["snowflake"]["database"],
-    "schema": st.secrets["snowflake"]["schema"],
-}
-
-# Initialize the Snowflake session
-session = Session.builder.configs(sf_options).create()
 
 
 # Get the current credentials
-# session = get_active_session()
-
-"""
-Cortex Analyst App
-====================
-This app allows users to interact with their data using natural language.
-"""
+session = get_active_session()
+session_id = session.session_id  # From snowflake.connector
 
 import json  # To handle JSON data
 import time
@@ -39,13 +20,122 @@ from snowflake.snowpark.exceptions import SnowparkSQLException
 
 # List of available semantic model paths in the format: @<database>.<schema>.<stage>/<file>.yaml
 AVAILABLE_SEMANTIC_MODELS_PATHS = [
+    '@"TEST_DB"."PUBLIC"."MY_STAGE"/global_sales.yaml',
     '@"TEST_DB"."PUBLIC"."MY_STAGE"/pizza.yaml'
+    
 ]
 API_ENDPOINT = "/api/v2/cortex/analyst/message"
 API_TIMEOUT = 50000  # in milliseconds
 
-# Initialize a Snowpark session for executing queries
-session = get_active_session()
+
+
+def add_custom_css():
+    custom_css = """
+    <style>
+    /* Set the overall background color for the app */
+    body {
+        background-color: #f4f7f6;
+    }
+
+    /* Style for the header */
+    .streamlit-expanderHeader {
+        font-size: 20px !important;
+        font-weight: bold;
+        color: #2a4d8d;
+    }
+
+    /* Style for the title */
+    h1 {
+        color: #2a4d8d;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    /* Customize the sidebar background */
+    .css-1d391kg {
+        background-color: #2a4d8d !important;
+        color: white !important;
+    }
+
+    /* Style the buttons */
+    .stButton > button {
+        background-color: #CFEAE2;
+        color: black;
+        border-radius: 12px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .stButton > button:hover {
+        background-color: white !important;
+        color: black !important;
+        border: 2px solid #455F56;
+    }
+    
+    section[data-testid="stSidebar"] .stDownloadButton > button {
+        background-color: #CFEAE2 !important;
+        color: black !important;
+        border-radius: 12px !important;
+        font-weight: bold !important;
+        transition: background-color 0.3s ease !important;
+        width: 100% !important;
+        border: none !important;
+        margin: 0.25rem 0 !important;
+    }
+
+    section[data-testid="stSidebar"] .stDownloadButton > button:hover {
+        background-color: white !important;
+        color: black !important;
+        border: 2px solid #455F56 !important;
+    }
+
+    /* Add some padding between widgets */
+    .stTextInput, .stSelectbox, .stButton {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* Customize the chat bubble styles */
+    .streamlit-chat-message {
+        padding: 12px 18px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        box-shadow: 0px 1px 4px rgba(0,0,0,0.1);
+    }
+
+
+    /* Customize user message bubbles */
+    .streamlit-chat-message[data-role="user"] {
+        background-color: #00BFFF;
+        color: white;
+    }
+
+   /* More generic selector for analyst messages */
+    div[data-testid="stChatMessage"]:has(div[data-testid="stChatMessageContent"]) {
+    border-left: 4px solid #1d3f8a;
+    background-color: #f9f9f9;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+    /* Style for section headers */
+    .stExpanderHeader {
+        background-color: #e3f2fd;
+        color: #1c3b66;
+        font-weight: bold; !important
+    }
+
+    /* Add custom background color to selected query result section */
+    .stDataFrame {
+        background-color: #CFEAE2;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    
+    </style>
+    """
+    st.markdown(custom_css, unsafe_allow_html=True)
+
 
 
 def main():
@@ -58,6 +148,8 @@ def main():
     display_conversation()
     handle_user_inputs()
     handle_error_notifications()
+    add_custom_css()
+
 
 
 def reset_session_state():
@@ -67,14 +159,20 @@ def reset_session_state():
 
 
 def show_header_and_sidebar():
-    """Display the header and sidebar of the app."""
-    # Set the title and introductory text of the app
-    st.title("Cortex Analyst")
+    """Display the header and sidebar of the app.🤖"""
+    st.title("❄️ SalesBot ❄️")
+
     st.markdown(
-        "Welcome to Cortex Analyst! Type your questions below to interact with your data."
+        """
+        
+        **Ask. Analyze. Act.**  
+        Get real-time sales insights with the power of *Cortex Analyst* under the hood.  
+        One question away from unlocking your insights 💡
+        """,
+        unsafe_allow_html=True
     )
 
-    # Sidebar with a reset button
+
     with st.sidebar:
         st.selectbox(
             "Selected semantic model:",
@@ -84,12 +182,34 @@ def show_header_and_sidebar():
             on_change=reset_session_state,
         )
         st.divider()
-        # Center this button
-        _, btn_container, _ = st.columns([2, 6, 2])
-        if btn_container.button("Clear Chat History", use_container_width=True):
+
+        # _, btn_container, _ = st.columns([2, 6, 2])
+        if st.button("Clear Chat History", use_container_width=True):
             reset_session_state()
 
+        # Only show "Save as PDF" if messages exist
+        if st.session_state.messages:
+            pdf_data = generate_chat_pdf(st.session_state.messages)
+            st.download_button(
+                label=" Save Chat (PDF)",
+                data=pdf_data,
+                file_name=f"chat_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
+        if st.session_state.messages:
+            if st.button("🧠 Smart Summary Insights", use_container_width=True):
+                with st.spinner("Generating smart summary via Cortex..."):
+                    summary = generate_smart_summary(st.session_state.messages)
+                    if summary:
+                        st.success("Smart Summary:")
+                        st.markdown(summary)
+                    else:
+                        st.error("Failed to generate summary.")
+                
+           
 
+        
 def handle_user_inputs():
     """Handle user inputs from the chat interface."""
     # Handle chat input
@@ -101,6 +221,8 @@ def handle_user_inputs():
         suggestion = st.session_state.active_suggestion
         st.session_state.active_suggestion = None
         process_user_input(suggestion)
+
+
 
 
 def handle_error_notifications():
@@ -187,9 +309,9 @@ def get_analyst_response(messages: List[Dict]) -> Tuple[Dict, Optional[str]]:
         error_msg = f"""
         An Analyst API error has occurred 🚨
 
-* Response code: `{resp['status']}`
-* Request ID: `{parsed_content['request_id']}`
-* Error code: `{parsed_content['error_code']}`
+* Response code: {resp['status']}
+* Request ID: {parsed_content['request_id']}
+* Error code: {parsed_content['error_code']}
 
 Message:
         """
@@ -236,33 +358,6 @@ def display_message(content: List[Dict[str, str]], message_index: int):
 @st.cache_data(show_spinner=False)
 def get_query_exec_result(query: str) -> Tuple[Optional[pd.DataFrame], Optional[str]]:
     """
-    Execute the SQL query, convert the results to a pandas DataFrame, and generate a general explanation of the results.
-
-    Args:
-        query (str): The SQL query.
-
-    Returns:
-        Tuple[Optional[pd.DataFrame], Optional[str]]: The query results and the error message.
-    """
-    global session
-    try:
-        df = session.sql(query).to_pandas()
-
-        # Ensure the date column is parsed correctly
-        if "date_time" in df.columns:  # Replace "date_time" with the actual column name
-            try:
-                # Parse the date column with the correct format
-                df["date_time"] = pd.to_datetime(df["date_time"], format="%mm/%dd/%yyyy %H:%M", errors="coerce")
-            except ValueError as e:
-                return None, f"Error parsing date column: {str(e)}"
-
-        return df, None
-    except SnowparkSQLException as e:
-        return None, str(e)
-
-@st.cache_data(show_spinner=False)
-def get_query_exec_result(query: str) -> Tuple[Optional[pd.DataFrame], Optional[str]]:
-    """
     Execute the SQL query and convert the results to a pandas DataFrame.
 
     Args:
@@ -294,13 +389,13 @@ def generate_query_explanation(sql: str) -> str:
     if "SELECT" in sql.upper():
         explanation += "- This query is retrieving data from a table.\n"
         if "WHERE" in sql.upper():
-            explanation += "- It includes filtering conditions using a `WHERE` clause.\n"
+            explanation += "- It includes filtering conditions using a WHERE clause.\n"
         if "GROUP BY" in sql.upper():
-            explanation += "- The query is aggregating data based on specific columns using `GROUP BY`.\n"
+            explanation += "- The query is aggregating data based on specific columns using GROUP BY.\n"
         if "ORDER BY" in sql.upper():
-            explanation += "- The results are being sorted based on the `ORDER BY` clause.\n"
+            explanation += "- The results are being sorted based on the ORDER BY clause.\n"
         if "JOIN" in sql.upper():
-            explanation += "- Multiple tables are being combined using a `JOIN` operation.\n"
+            explanation += "- Multiple tables are being combined using a JOIN operation.\n"
 
     elif "INSERT" in sql.upper():
         explanation += "- This query is inserting new data into a table.\n"
@@ -341,7 +436,7 @@ def display_sql_query(sql: str, message_index: int):
                 return
 
             # Show query results in three tabs
-            data_tab, chart_tab, explanation_tab = st.tabs(["Data 📄", "Chart 📈", "Explanation 🧐"])
+            data_tab, chart_tab, explanation_tab = st.tabs(["DATA", "CHART", "EXPLANATION"])
 
             with data_tab:
                 st.dataframe(df, use_container_width=True)
@@ -353,6 +448,10 @@ def display_sql_query(sql: str, message_index: int):
                 query_explanation = generate_query_explanation(sql)
                 st.markdown(query_explanation)
 
+import pandas as pd
+import streamlit as st
+import plotly.express as px
+
 def display_charts_tab(df: pd.DataFrame, message_index: int) -> None:
     """
     Display the charts tab.
@@ -361,7 +460,6 @@ def display_charts_tab(df: pd.DataFrame, message_index: int) -> None:
         df (pd.DataFrame): The query results.
         message_index (int): The index of the message.
     """
-    # There should be at least 2 columns to draw charts
     if len(df.columns) >= 2:
         all_cols_set = set(df.columns)
         col1, col2 = st.columns(2)
@@ -373,17 +471,18 @@ def display_charts_tab(df: pd.DataFrame, message_index: int) -> None:
             all_cols_set.difference({x_col}),
             key=f"y_col_select_{message_index}",
         )
+
         chart_type = st.selectbox(
             "Select chart type",
-            options=["Line Chart 📈", "Bar Chart 📊", "Pie Chart 🥧"],
+            options=["Line Chart", "Bar Chart", "Pie Chart"],
             key=f"chart_type_{message_index}",
         )
-        if chart_type == "Line Chart 📈":
+
+        if chart_type == "Line Chart":
             st.line_chart(df.set_index(x_col)[y_col])
-        elif chart_type == "Bar Chart 📊":
+        elif chart_type == "Bar Chart":
             st.bar_chart(df.set_index(x_col)[y_col])
-        elif chart_type == "Pie Chart 🥧":
-            # Ensure the Y-axis column is numeric for pie chart
+        elif chart_type == "Pie Chart":
             if pd.api.types.is_numeric_dtype(df[y_col]):
                 st.plotly_chart(
                     px.pie(df, names=x_col, values=y_col, title="Pie Chart"),
@@ -391,7 +490,128 @@ def display_charts_tab(df: pd.DataFrame, message_index: int) -> None:
                 )
             else:
                 st.error("The selected Y-axis column must be numeric for a pie chart.")
+        
     else:
         st.write("At least 2 columns are required")
+
+
+from fpdf import FPDF
+import io
+
+class StyledPDF(FPDF):
+    def __init__(self):
+        super().__init__()
+        self.set_auto_page_break(auto=True, margin=15)
+        self.add_page()
+        self.set_font("Arial", size=12)
+
+    def add_message(self, role: str, text: str):
+        if role.lower() == "user":
+            self.set_text_color(0, 0, 255)  # Blue
+            self.set_font("Arial", style="B", size=12)
+            self.cell(0, 10, "User:", ln=True)
+        elif role.lower() == "analyst":
+            self.set_text_color(100, 100, 100)  # Gray
+            self.set_font("Arial", style="B", size=12)
+            self.cell(0, 10, "Analyst:", ln=True)
+        
+        self.set_font("Arial", size=12)
+        self.set_text_color(0, 0, 0)  # Reset to black
+        self.multi_cell(0, 10, text)
+        self.ln(5)  # Add space after each message
+
+def generate_chat_pdf(messages: List[Dict]) -> bytes:
+    """Generate a styled PDF from the chat history."""
+    pdf = StyledPDF()
+
+    for msg in messages:
+        role = msg["role"]
+        for item in msg["content"]:
+            if item["type"] == "text":
+                pdf.add_message(role, item["text"])
+            elif item["type"] == "sql":
+                sql = item.get("statement", "")
+                df, err = get_query_exec_result(sql)
+                if df is not None and not df.empty:
+                    sample = df.head(5).to_string(index=False)
+                    pdf.add_message(role, f"Query Output (Top 5 rows):\n{sample}")
+                elif err:
+                    pdf.add_message(role, f"SQL Error: {err}")
+    return bytes(pdf.output(dest="S").encode("latin1"))
+
+
+def generate_smart_summary(messages: List[Dict]) -> Optional[str]:
+    """
+    Generate a smart summary of analyst messages and natural language summaries of SQL outputs.
+    """
+    from datetime import datetime
+
+    def summarize_dataframe(df: pd.DataFrame) -> str:
+        if df.empty:
+            return "Query returned no data."
+
+        summary_lines = []
+
+        # Use column name and type heuristics
+        num_cols = df.select_dtypes(include="number").columns
+        str_cols = df.select_dtypes(include="object").columns
+
+        if "total" in " ".join(col.lower() for col in df.columns):
+            for col in num_cols:
+                total = df[col].sum()
+                summary_lines.append(f"Total {col.replace('_', ' ').title()}: {total:,.2f}")
+        elif len(df.columns) == 2 and pd.api.types.is_numeric_dtype(df.dtypes[1]):
+            summary_lines.append("Top breakdown:")
+            for _, row in df.head(5).iterrows():
+                key = row[0]
+                value = row[1]
+                summary_lines.append(f"- {key}: {value:,.2f}" if isinstance(value, (int, float)) else f"- {key}: {value}")
+        elif "year" in df.columns.str.lower().tolist() and len(num_cols) == 1:
+            metric = num_cols[0]
+            summary_lines.append(f"Year-wise breakdown of {metric.replace('_', ' ').title()}:")
+            for _, row in df.iterrows():
+                summary_lines.append(f"- {int(row['YEAR'])}: {row[metric]:,.2f}")
+        elif "product" in " ".join(col.lower() for col in df.columns):
+            summary_lines.append("Sample of products:")
+            for _, row in df.head(5).iterrows():
+                summary_lines.append(f"- {row[0]}")
+        else:
+            summary_lines.append("Top 5 result rows:")
+            for _, row in df.head(5).iterrows():
+                summary_lines.append("- " + ", ".join(f"{col}: {val}" for col, val in row.items()))
+
+        return "\n".join(summary_lines)
+
+    analyst_texts = []
+    sql_summaries = []
+
+    for msg in messages:
+        if msg["role"] == "analyst":
+            for item in msg["content"]:
+                if item["type"] == "text":
+                    analyst_texts.append(item["text"])
+                elif item["type"] == "sql":
+                    sql = item.get("statement", "")
+                    df, err = get_query_exec_result(sql)
+                    if df is not None:
+                        sql_summaries.append(summarize_dataframe(df))
+                    elif err:
+                        sql_summaries.append(f"SQL Error: {err}")
+
+    final_summary = "**🧠 Smart Summary**\n\n"
+
+    # if analyst_texts:
+    #     final_summary += "**Analyst Insights:**\n"
+    #     final_summary += "\n\n".join(analyst_texts)
+    #     final_summary += "\n\n"
+
+    if sql_summaries:
+        final_summary += "**SQL Output Summaries:**\n"
+        final_summary += "\n\n".join(sql_summaries)
+
+    return final_summary.strip()
+
+
+
 if __name__ == "__main__":
     main()
