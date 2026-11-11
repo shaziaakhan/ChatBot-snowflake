@@ -1,0 +1,532 @@
+name: GLOBAL_SALES_FINAL
+tables:
+  - name: REPRESENTATIVES
+    base_table:
+      database: TEST_DB
+      schema: PUBLIC
+      table: REPRESENTATIVES
+    dimensions:
+      - name: PERSON
+        expr: PERSON
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Maril�ne Rousseau
+          - Andile�Ihejirika
+          - Nicodemo Bautista
+        description: The name of the representative, typically a person who is authorized to act on behalf of an organization or entity.
+        synonyms:
+          - individual
+          - representative
+          - agent
+          - delegate
+          - member
+          - human
+          - entity
+          - being
+          - human_being
+          - mortal
+      - name: REGION
+        expr: REGION
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Caribbean
+          - Central Africa
+          - Central America
+        description: Geographic region represented by the representative.
+        synonyms:
+          - area
+          - territory
+          - zone
+          - district
+          - location
+          - province
+          - state
+          - county
+          - municipality
+          - jurisdiction
+    description: ''
+    synonyms: []
+    primary_key:
+      columns:
+        - REGION
+  - name: RETURN
+    base_table:
+      database: TEST_DB
+      schema: PUBLIC
+      table: RETURN
+    dimensions:
+      - name: RETURNED
+        expr: RETURNED
+        data_type: BOOLEAN
+        sample_values:
+          - 'TRUE'
+        description: Indicates whether an item was returned by the customer.
+        synonyms:
+          - returned_items
+          - processed_returns
+          - return_status
+          - items_returned
+          - return_flag
+      - name: ORDER_ID
+        expr: ORDER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - CA-2012-SA20830140-41210
+          - IN-2012-PB19210127-41259
+          - CA-2012-SC20095140-41174
+        description: Unique identifier for each order, in the format of "Region-Year-BranchCode-OrderNumber-SequenceNumber".
+        synonyms:
+          - purchase_order_number
+          - order_number
+          - po_number
+          - transaction_id
+          - order_reference
+      - name: REGION
+        expr: REGION
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Central US
+          - Oceania
+          - Western Africa
+        description: Geographic region where the return was processed.
+        synonyms:
+          - area
+          - territory
+          - zone
+          - district
+          - location
+          - province
+          - state
+          - county
+          - municipality
+          - geographic_area
+    description: ''
+    synonyms: []
+    primary_key:
+      columns:
+        - REGION
+    unique_keys:
+      - columns:
+          - ORDER_ID
+  - name: SALES
+    base_table:
+      database: TEST_DB
+      schema: PUBLIC
+      table: SALES
+    dimensions:
+      - name: ORDER_ID
+        expr: ORDER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - CA-2014-AB10015140-41954
+          - IN-2014-JR162107-41675
+          - IN-2014-CR127307-41929
+        description: Unique identifier for each sales order, composed of country code, year, sales representative code, and a unique order number.
+        synonyms:
+          - order_number
+          - purchase_id
+          - transaction_id
+          - sales_id
+          - invoice_number
+          - order_reference
+      - name: SHIP_MODE
+        expr: SHIP_MODE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - First Class
+          - Second Class
+          - Same Day
+        description: The shipping method used to deliver the order, indicating the level of service and speed of delivery.
+        synonyms:
+          - shipping_method
+          - delivery_mode
+          - transportation_mode
+          - freight_mode
+          - logistics_mode
+          - dispatch_mode
+      - name: CUSTOMER_ID
+        expr: CUSTOMER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - AB-100151402
+          - JR-162107
+          - CR-127307
+        description: Unique identifier for the customer who made the purchase.
+        synonyms:
+          - client_id
+          - customer_number
+          - account_id
+          - client_number
+          - account_holder_id
+          - customer_account_id
+          - user_id
+      - name: CUSTOMER_NAME
+        expr: CUSTOMER_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Aaron Bergman
+          - Craig Reiter
+          - Magdelene Morse
+        description: The name of the customer who made a purchase.
+        synonyms:
+          - client_name
+          - customer_title
+          - account_holder
+          - account_name
+          - client_title
+          - buyer_name
+          - account_owner
+      - name: SEGMENT
+        expr: SEGMENT
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Consumer
+          - Corporate
+          - Home Office
+        description: The type of customer or market segment that made the purchase, such as individual consumers, corporate entities, or home office businesses.
+        synonyms:
+          - market_segment
+          - customer_segment
+          - demographic_segment
+          - target_segment
+          - audience_segment
+          - customer_category
+      - name: CITY
+        expr: CITY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Oklahoma City
+          - Wollongong
+          - Brisbane
+        description: The city where the sale was made.
+        synonyms:
+          - town
+          - municipality
+          - metropolis
+          - urban_area
+          - location
+          - settlement
+          - urban_center
+          - metropolitan_area
+      - name: STATE
+        expr: STATE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Oklahoma
+          - New South Wales
+          - Queensland
+        description: The geographic region where the sale was made, represented by the state or province name.
+        synonyms:
+          - province
+          - territory
+          - region
+          - area
+          - location
+          - jurisdiction
+          - county
+          - parish
+          - prefecture
+          - district
+      - name: COUNTRY
+        expr: COUNTRY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - United States
+          - Australia
+          - Germany
+        description: The country where the sale was made.
+        synonyms:
+          - nation
+          - land
+          - territory
+          - state
+          - republic
+          - commonwealth
+          - homeland
+          - nationality
+      - name: REGION
+        expr: REGION
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Central US
+          - Oceania
+          - Western Europe
+        description: Geographic region where the sale was made.
+        synonyms:
+          - area
+          - territory
+          - zone
+          - district
+          - province
+          - county
+          - geographic_area
+          - locale
+          - location
+      - name: MARKET
+        expr: MARKET
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - USCA
+          - Asia Pacific
+          - Europe
+        description: Geographic region where the sale was made.
+        synonyms:
+          - target_area
+          - sales_territory
+          - geographic_region
+          - trade_area
+          - sales_market
+          - territory
+          - region
+          - area
+      - name: PRODUCT_ID
+        expr: PRODUCT_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - TEC-PH-5816
+          - FUR-CH-5379
+          - TEC-PH-5356
+        description: Unique identifier for the prodct being sold.
+        synonyms:
+          - product_code
+          - item_id
+          - product_number
+          - item_code
+          - sku
+          - product_key
+      - name: CATEGORY
+        expr: CATEGORY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Technology
+          - Furniture
+          - Office Supplies
+        description: The category of the product being sold, such as Technology, Furniture, or Office Supplies, which helps to group and analyze sales data by product type.
+        synonyms:
+          - type
+          - classification
+          - group
+          - genre
+          - kind
+          - product_type
+          - class
+          - product_category
+          - product_group
+      - name: Sub_Category
+        expr: '"Sub-Category"'
+        data_type: VARCHAR(16777216)
+      - name: PRODUCT_NAME
+        expr: PRODUCT_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Samsung Convoy 3
+          - Novimex Executive Leather Armchair, Black
+          - Nokia Smart Phone, with Caller ID
+        description: The name of the product being sold, which can be used to analyze sales trends and patterns by specific product.
+        synonyms:
+          - item_name
+          - product_title
+          - item_description
+          - product_label
+          - product_identifier
+          - merchandise_name
+          - goods_name
+          - commodity_name
+          - article_name
+      - name: SALES
+        expr: SALES
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - $221.98
+          - $3,709.40
+          - $5,175.17
+        description: The total amount of sales revenue generated by a particular transaction or event.
+        synonyms:
+          - revenue
+          - turnover
+          - income
+          - earnings
+          - proceeds
+          - receipts
+          - total_sales
+          - sales_amount
+          - sales_figure
+      - name: PROFIT
+        expr: PROFIT
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - $62.15
+          - '-$288.77'
+          - $919.97
+        description: The profit earned from each sale, representing the amount by which revenue exceeds costs.
+        synonyms:
+          - gain
+          - earnings
+          - net_income
+          - revenue
+          - surplus
+          - income
+          - returns
+          - benefit
+          - margin
+      - name: ORDER_PRIORITY
+        expr: ORDER_PRIORITY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - High
+          - Critical
+          - Medium
+        description: The level of urgency assigned to an order, indicating its priority for fulfillment, with possible values being High, Critical, or Medium.
+        synonyms:
+          - order_importance
+          - priority_level
+          - shipping_priority
+          - order_urgency
+          - delivery_priority
+          - fulfillment_priority
+    time_dimensions:
+      - name: ORDER_DATE
+        expr: ORDER_DATE
+        data_type: DATE
+        sample_values:
+          - '2014-11-11'
+          - '2014-02-05'
+          - '2014-10-17'
+        description: Date on which the sales order was placed.
+        synonyms:
+          - order_timestamp
+          - purchase_date
+          - transaction_date
+          - sale_date
+          - date_ordered
+          - order_creation_date
+          - order_placement_date
+          - date_of_order
+      - name: SHIP_DATE
+        expr: SHIP_DATE
+        data_type: DATE
+        sample_values:
+          - '2014-11-13'
+          - '2014-02-07'
+          - '2014-10-18'
+        description: Date on which the order was shipped to the customer.
+        synonyms:
+          - dispatch_date
+          - delivery_date
+          - shipping_day
+          - send_date
+          - departure_date
+          - transport_date
+    facts:
+      - name: ROW_ID
+        expr: ROW_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '40098'
+          - '26341'
+          - '25330'
+        description: Unique identifier for each sales transaction.
+        synonyms:
+          - record_id
+          - row_number
+          - unique_id
+          - identifier
+          - entry_id
+          - index_id
+          - line_number
+          - sequence_id
+      - name: POSTAL_CODE
+        expr: POSTAL_CODE
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '73120'
+          - '98103'
+        description: The postal code of the customer's shipping or billing address.
+        synonyms:
+          - zip_code
+          - postcode
+          - zip
+          - postal
+          - mailing_code
+          - geographic_code
+          - location_code
+      - name: QUANTITY
+        expr: QUANTITY
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '2'
+          - '9'
+          - '5'
+        description: The quantity of items sold in a single transaction.
+        synonyms:
+          - amount
+          - count
+          - volume
+          - number
+          - total
+          - units
+          - items
+          - stock
+          - inventory
+          - capacity
+      - name: DISCOUNT
+        expr: DISCOUNT
+        data_type: NUMBER(38,3)
+        sample_values:
+          - '0.000'
+          - '0.100'
+          - '0.200'
+        description: The percentage discount applied to the sale, with 0.000 indicating no discount and higher values indicating a greater discount.
+        synonyms:
+          - rebate
+          - markdown
+          - price_reduction
+          - discount_percentage
+          - price_cut
+          - savings
+          - concession
+          - price_discount
+      - name: SHIPPING_COST
+        expr: SHIPPING_COST
+        data_type: NUMBER(38,3)
+        sample_values:
+          - '40.770'
+          - '923.630'
+          - '915.490'
+        description: The total cost incurred for shipping products to customers.
+        synonyms:
+          - shipping_fee
+          - delivery_cost
+          - freight_charge
+          - transportation_expense
+          - logistics_cost
+          - handling_charge
+    description: ''
+    synonyms: []
+    primary_key:
+      columns:
+        - REGION
+    unique_keys:
+      - columns:
+          - ORDER_ID
+relationships:
+  - name: region1
+    left_table: REPRESENTATIVES
+    relationship_columns:
+      - left_column: REGION
+        right_column: REGION
+    right_table: RETURN
+  - name: region2
+    left_table: REPRESENTATIVES
+    relationship_columns:
+      - left_column: REGION
+        right_column: REGION
+    right_table: SALES
+  - name: region3
+    left_table: SALES
+    relationship_columns:
+      - left_column: ORDER_ID
+        right_column: ORDER_ID
+      - left_column: REGION
+        right_column: REGION
+    right_table: RETURN

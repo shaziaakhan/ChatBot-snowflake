@@ -1,0 +1,8 @@
+definition_version: 1
+
+native_app:
+  name: TEST_APP_PACKAGE
+  artifacts:
+    - app/src/manifest.yml
+    - app/src/setup.sql
+    - app/src/libraries/
