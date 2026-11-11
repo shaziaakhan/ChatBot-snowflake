@@ -1,0 +1,71 @@
+{
+  "thread_id": 1,
+  "parent_message_id": 1,
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Show me sales analytics data."
+        }
+      ]
+    }
+  ],
+"tool_choice": {
+  "type": "required"
+},
+  "models": {
+    "orchestration": "claude-4-sonnet"
+  },
+  "instructions": {
+    "response": "You are a helpful sales analytics assistant. Respond in a friendly but concise manner.",
+    "orchestration": "Use teams_cortex for any query related to sales, revenue, or profit.",
+    "system": "You are a friendly agent that helps users explore sales, customers, products, and performance across regions."
+  },
+  "orchestration": {
+    "budget": {
+      "seconds": 30,
+      "tokens": 16000
+    }
+  },
+  "tools": [
+    {
+      "tool_spec": {
+        "type": "generic",
+        "name": "teams_cortex",
+        "description": "Analyst tool to run queries on sales data.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The SQL or natural language query to run against the sales dataset."
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    }
+  
+  ],
+  "tool_resources": {
+    "teams_cortex": {
+      "type": "function",
+      "execution_environment": {
+        "type": "warehouse",
+        "warehouse": "COMPUTE_WH"
+      },
+      "identifier": "TEST_DB.PUBLIC.GLOBAL_SALES"
+    }
+  },
+  "starter_prompts": [
+    "Show me the top 10 products by total sales",
+    "Compare average discount and profit margin by category",
+    "Which customers generated the highest revenue in Q1?",
+    "List the most common shipping modes used in Europe",
+    "Show sales trends by segment over time",
+    "Find all orders with high priority and low profit",
+    "Summarize return rates by sub-category"
+  ]
+}

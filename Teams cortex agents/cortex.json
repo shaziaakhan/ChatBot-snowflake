@@ -1,0 +1,97 @@
+{
+  "thread_id": 0,
+  "parent_message_id": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Show me sales analytics data."
+        }
+      ]
+    }
+  ],
+"tool_choice": {
+  "type": "required"
+},
+  "models": {
+    "orchestration": "claude-4-sonnet"
+  },
+  "instructions": {
+    "response": "You are a helpful sales analytics assistant. Respond in a friendly but concise manner.",
+    "orchestration": "Use Cortex Analyst for any query related to sales, revenue, or profit. Use Cortex Search for document or metadata lookups.",
+    "system": "You are a friendly agent that helps users explore sales, customers, products, and performance across regions."
+  },
+  "orchestration": {
+    "budget": {
+      "seconds": 30,
+      "tokens": 16000
+    }
+  },
+  "tools": [
+    {
+      "tool_spec": {
+        "type": "generic",
+        "name": "cortex_analyst",
+        "description": "Analyst tool to run queries on sales data.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The SQL or natural language query to run against the sales dataset."
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    },
+    {
+      "tool_spec": {
+        "type": "generic",
+        "name": "cortex_search",
+        "description": "Search tool to look up documents or metadata.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "string",
+              "description": "Keywords or terms to search in the sales documents."
+            }
+          },
+          "required": ["keywords"]
+        }
+      }
+    }
+  ],
+  "tool_resources": {
+    "cortex_analyst": {
+      "type": "function",
+      "execution_environment": {
+        "type": "warehouse",
+        "warehouse": "COMPUTE_WH"
+      },
+      "identifier": "TEST_DB.PUBLIC.GLOBAL_SALES"
+    },
+    "cortex_search": {
+      "type": "function",
+      "execution_environment": {
+        "type": "warehouse",
+        "warehouse": "COMPUTE_WH"
+      },
+      "identifier": "TEST_DB.PUBLIC.GLOBAL_SALES",
+      "title_column": "PRODUCT_NAME",
+      "id_column": "ORDER_ID"
+    }
+  },
+  "starter_prompts": [
+    "Show me the top 10 products by total sales",
+    "Compare average discount and profit margin by category",
+    "Which customers generated the highest revenue in Q1?",
+    "List the most common shipping modes used in Europe",
+    "Show sales trends by segment over time",
+    "Find all orders with high priority and low profit",
+    "Summarize return rates by sub-category"
+  ]
+}
